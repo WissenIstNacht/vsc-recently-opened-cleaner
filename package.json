@@ -13,8 +13,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "recently-opened-cleaner.helloWorld",
-        "title": "Hello World"
+        "command": "recently-opened-cleaner.clean-recently-opened",
+        "title": "Clean Recently Opened List"
       }
     ]
   },
