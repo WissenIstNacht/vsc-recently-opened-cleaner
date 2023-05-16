@@ -1,75 +1,48 @@
-# recently-opened-cleaner README
+# "Recently Opened" Cleaner
 
-This is the README for your extension "recently-opened-cleaner". After writing up a brief description, we recommend including the following sections.
+This extension allows you to clean up the "Recently Opened" list in VS Code.
+
+## Intro
+
+The "File: Open Recent" command is a handy feature provided by VS Code. It allows to open recently used workspaces and files through a dropdown menu right in the editor.
+
+Unfortunately, it is not quite flawless. See, every workspace listed in the dropdown is associated with a particular path on local disk. That's fine as long as workspaces are not moved or deleted. But this happens a lot in practice. Maybe some of the workspaces opened were only temporary to begin with. Or maybe they were created in the wrong location. Either way, over time, the list of recently opened workspaces will just grow and be filled with useless entries.
+
+To remediate this issue, this extension provides a simple command that cleans the list. To be more precise, the command goes through each workspace in the list and checks if the workspace's path is still valid. If that's not the case that entry will be removed form the list.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Clean Recently Opened List
 
-For example if there is an image subfolder under your extension project workspace:
+Currently, the extension comes with one command: `Clean Recently Opened List`. This command allows you to remove all the entries from the list that do not point to a valid path in one go.
 
-\!\[feature X\]\(images/feature-x.png\)
+## Bugs & Wishes
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Feature Requests
 
-## Requirements
+I'm planning on improving the UX of the existing command (e.g., give feedback on the process or report errors). I might also add a couple of options like automatically triggering the command on application start, if desired. If there’s something that would particularly help you, drop and issue on Github!
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Issues
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-- `myExtension.enable`: Enable/disable this extension.
-- `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-- Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-- Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+I plan on making this a bug-free place. But hey, they're tricky to get rid of. If you find any, drop and issue on Github! :)
 
 ## Acknowledgements
 
 - Extension icon: [Dust icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/dust)
+
+---
+
+## Development
+
+### Run the extension in VS Code
+
+Launch debug environment (default `F5`) to open a new window with the extension loaded. The opened window can be relaoded to include the latest updates to the code.
+
+### Run tests
+
+- Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Extension Tests`.
+- Press `F5` to run the tests in a new window with your extension loaded.
+- See the output of the test result in the debug console.
+- Make changes to `src/test/suite/extension.test.ts` or create new test files inside the `test/suite` folder.
+  - The provided test runner will only consider files matching the name pattern `**.test.ts`.
+  - You can create folders inside the `test` folder to structure your tests any way you want.
