@@ -4,6 +4,10 @@ All notable changes to the "recently-opened-cleaner" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.1.0]
 
-- Initial commit
+- Add simple version "Clean Recently Opened List" command.
+- Add project license.
+- Add icon.
+- Edit Readme.
+- Edit Extension manifest.
