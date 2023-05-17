@@ -2,7 +2,7 @@
   "name": "recently-opened-cleaner",
   "displayName": "Recently Opened Cleaner",
   "description": "Remove workspaces from recently opened menu whose paths no longer exist.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "ValentinRacine",
   "engines": {
     "vscode": "^1.78.0"
