@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import * as vscode from 'vscode';
+import { ExtensionContext, Uri, commands, window } from 'vscode';
 
-type URI = vscode.Uri;
+type URI = Uri;
 
 // The following interfaces are copied from
 // https://github.com/microsoft/vscode/blob/9ff83d41a3268ec578c032ae54102285b447e947/src/vs/platform/workspaces/common/workspaces.ts#L48
@@ -24,11 +24,11 @@ interface IRecentFile {
   readonly remoteAuthority?: string;
 }
 
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
+export function activate(context: ExtensionContext) {
+  let disposable = commands.registerCommand(
     'recently-opened-cleaner.clean-recently-opened',
     async () => {
-      let recentEntries = (await vscode.commands.executeCommand(
+      let recentEntries = (await commands.executeCommand(
         '_workbench.getRecentlyOpened'
       )) as IRecentlyOpened;
 
@@ -38,10 +38,28 @@ export function activate(context: vscode.ExtensionContext) {
       const initialEntriesCount = recentEntries.workspaces.length;
       const toDeleteCount = filtered.length;
 
+      if (toDeleteCount === 0) {
+        window.showInformationMessage(
+          'No stale entries found in the recently opened list.'
+        );
+      }
+
+      const promptValue = await window.showInformationMessage(
+        `Found ${toDeleteCount} stale entries in the recently opened list.`,
+        { modal: true },
+        ...['Delete']
+      );
+      console.log(promptValue);
+
+      if (!promptValue) {
+        window.showInformationMessage('Canceled deletion.');
+        return;
+      }
+
       filtered.forEach((ws) => {
         console.log('Deleting ' + ws.folderUri.toString());
         try {
-          vscode.commands.executeCommand(
+          commands.executeCommand(
             'vscode.removeFromRecentlyOpened',
             ws.folderUri.fsPath
           );
@@ -57,21 +75,20 @@ export function activate(context: vscode.ExtensionContext) {
         }
       });
 
-      recentEntries = (await vscode.commands.executeCommand(
+      recentEntries = (await commands.executeCommand(
         '_workbench.getRecentlyOpened'
       )) as IRecentlyOpened;
       const newEntriesCount = recentEntries.workspaces.length;
 
       if (initialEntriesCount - toDeleteCount === newEntriesCount) {
-        console.log('success');
+        window.showInformationMessage(
+          `Successfully deleted ${toDeleteCount} entries.`
+        );
       } else {
-        console.error(
-          'From the initial ' +
-            initialEntriesCount +
-            ' entries, ' +
-            toDeleteCount +
-            ' entries should have been deleted. Effectively deleted: ' +
-            newEntriesCount
+        window.showErrorMessage(
+          `Somehing went wrong. Out of the ${toDeleteCount} entries that should have been deleted, only ${
+            initialEntriesCount - newEntriesCount
+          } got removed.`
         );
       }
     }
