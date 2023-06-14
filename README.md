@@ -16,6 +16,8 @@ To remediate this issue, this extension provides a simple command that cleans th
 
 Currently, the extension comes with one command: `Clean Recently Opened List`. This command allows you to remove all the entries from the list that do not point to a valid path in one go.
 
+Additionally, the the extension can run this command automatically once vs code is done starting up. The command will run without user interaction, except to report success or failure. This behaviour is turned off by default and can be activated in the settings.
+
 ## Bugs & Wishes
 
 ### Feature Requests
