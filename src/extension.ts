@@ -86,7 +86,7 @@ export function activate(context: ExtensionContext) {
         );
       } else {
         window.showErrorMessage(
-          `Somehing went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
+          `Something went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
             initialEntriesCount - newEntriesCount
           } got removed.`
         );
@@ -143,7 +143,7 @@ export function activate(context: ExtensionContext) {
         );
       } else {
         window.showErrorMessage(
-          `Somehing went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
+          `Something went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
             initialEntriesCount - updatedEntriesCount
           } got removed.`
         );
