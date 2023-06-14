@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { ExtensionContext, Uri, commands, window } from 'vscode';
+import { ExtensionContext, Uri, commands, window, workspace } from 'vscode';
 
 type URI = Uri;
 
@@ -40,12 +40,12 @@ export function activate(context: ExtensionContext) {
 
       if (toDeleteCount === 0) {
         window.showInformationMessage(
-          'No stale entries found in the recently opened list.'
+          'No stale items found in the recently opened list.'
         );
       }
 
       const promptValue = await window.showInformationMessage(
-        `Found ${toDeleteCount} stale entries in the recently opened list.`,
+        `Found ${toDeleteCount} stale item(s) in the recently opened list.`,
         { modal: true },
         ...['Delete']
       );
@@ -82,19 +82,86 @@ export function activate(context: ExtensionContext) {
 
       if (initialEntriesCount - toDeleteCount === newEntriesCount) {
         window.showInformationMessage(
-          `Successfully deleted ${toDeleteCount} entries.`
+          `Successfully deleted ${toDeleteCount} stale item(s) from the recently opened list.`
         );
       } else {
         window.showErrorMessage(
-          `Somehing went wrong. Out of the ${toDeleteCount} entries that should have been deleted, only ${
+          `Somehing went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
             initialEntriesCount - newEntriesCount
           } got removed.`
         );
       }
     }
   );
-
   context.subscriptions.push(disposable);
+
+  disposable = commands.registerCommand(
+    'recently-opened-cleaner.automatically-clean-recently-opened',
+    async () => {
+      let recentEntries = (await commands.executeCommand(
+        '_workbench.getRecentlyOpened'
+      )) as IRecentlyOpened;
+
+      const filtered = recentEntries.workspaces.filter(
+        (ws) => !isRecentlyOpenedValid(ws.folderUri)
+      );
+      const initialEntriesCount = recentEntries.workspaces.length;
+      const toDeleteCount = filtered.length;
+
+      if (toDeleteCount === 0) {
+        window.showInformationMessage(
+          'No stale items found in the recently opened list.'
+        );
+        return;
+      }
+
+      filtered.forEach((ws) => {
+        console.log('Deleting ' + ws.folderUri.toString());
+        try {
+          commands.executeCommand(
+            'vscode.removeFromRecentlyOpened',
+            ws.folderUri.fsPath
+          );
+        } catch (e) {
+          console.error(
+            'something went wrong for the folder with URI: ' +
+              ws.folderUri +
+              ' The error returned: ' +
+              e
+          );
+        }
+      });
+
+      let updatedRecentEntries = (await commands.executeCommand(
+        '_workbench.getRecentlyOpened'
+      )) as IRecentlyOpened;
+      const updatedEntriesCount = updatedRecentEntries.workspaces.length;
+
+      if (initialEntriesCount - toDeleteCount === updatedEntriesCount) {
+        window.showInformationMessage(
+          `Successfully deleted ${toDeleteCount} stale item(s) from the recently opened list.`
+        );
+      } else {
+        window.showErrorMessage(
+          `Somehing went wrong. Out of the ${toDeleteCount} item(s) that should have been deleted, only ${
+            initialEntriesCount - updatedEntriesCount
+          } got removed.`
+        );
+      }
+    }
+  );
+  context.subscriptions.push(disposable);
+  const config = workspace.getConfiguration('recently-opened-cleaner');
+  let shouldExecuteOnStart = config.get('runOnStartupFinished') as
+    | string
+    | undefined;
+  if (shouldExecuteOnStart) {
+    commands.executeCommand(
+      'recently-opened-cleaner.automatically-clean-recently-opened'
+    );
+  } else {
+    console.log('Recenty Opened Cleaner not enabled on start-up finished');
+  }
 }
 
 // This method is called when your extension is deactivated

@@ -26,13 +26,26 @@
   },
   "icon": "media/cleaning.png",
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "contributes": {
     "commands": [
       {
         "command": "recently-opened-cleaner.clean-recently-opened",
         "title": "Clean Recently Opened List"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Recently Opened Cleaner",
+      "properties": {
+        "recently-opened-cleaner.runOnStartupFinished": {
+          "type": "boolean",
+          "default": false,
+          "description": "Toggles whether or not the command should be run automatically *after* VS Code launches."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
