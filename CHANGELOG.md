@@ -6,10 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.2.0]
 
-- Improve UX by adding feedback for user when executing "Clean Recently Opened List" command.
+- Add command that conditionally cleans the recently opened list on "startUpFinished".
+- Add a boolean settings parameter that turns the new command on or off.
 
 ## [0.1.0]
 
+- Improve UX by adding feedback for user when executing "Clean Recently Opened List" command.
 - Add simple version "Clean Recently Opened List" command.
 - Add project license.
 - Add icon.
