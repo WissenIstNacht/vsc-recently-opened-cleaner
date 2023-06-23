@@ -4,6 +4,11 @@ All notable changes to the "recently-opened-cleaner" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.0]
+
+- Fix an error in the execution flow of the `Clean Recently Opened List` command.
+- Change transparent logo background to white.
+
 ## [0.2.0]
 
 - Add command that conditionally cleans the recently opened list on "startUpFinished".
