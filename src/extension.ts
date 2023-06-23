@@ -42,6 +42,7 @@ export function activate(context: ExtensionContext) {
         window.showInformationMessage(
           'No stale items found in the recently opened list.'
         );
+        return;
       }
 
       const promptValue = await window.showInformationMessage(
