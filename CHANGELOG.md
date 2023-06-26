@@ -4,6 +4,10 @@ All notable changes to the "recently-opened-cleaner" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0]
+
+- Lower the minimum VS Code version necessary to ue this extension from 1.78.0 to 1.73.1
+
 ## [1.0.0]
 
 - Fix an error in the execution flow of the `Clean Recently Opened List` command.
