@@ -1,0 +1,40 @@
+name: Publish Extension (Reusable WF)
+
+on:
+  workflow_call:
+    inputs:
+      update-type:
+        required: true
+        type: string
+    secrets:
+      WIN_PAT:
+        required: true
+      PAT:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.WIN_PAT }}
+      - name: Setup Node v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+      - name: Install node packages
+        run: yarn install
+      - name: Setup Git User
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Publish extension
+        run: vsce publish ${{ inputs.update-type }} --pat ${{ secrets.PAT }} --allow-missing-repository
+      - name: Push Version
+        run: git push origin
