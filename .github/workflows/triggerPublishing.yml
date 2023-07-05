@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - test/destination
+      - main
 
 permissions:
   contents: write
