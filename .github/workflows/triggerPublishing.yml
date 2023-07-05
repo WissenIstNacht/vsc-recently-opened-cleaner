@@ -41,7 +41,7 @@ jobs:
   update-patch:
     name: Performs patch update
     needs: isPatch
-    uses: ./.github/workflows/publish.yaml
+    uses: ./.github/workflows/publish.yml
     with:
       update-type: patch
     secrets:
@@ -50,7 +50,7 @@ jobs:
   update-minor:
     name: Performs patch update
     needs: isMinor
-    uses: ./.github/workflows/publish.yaml
+    uses: ./.github/workflows/publish.yml
     with:
       update-type: minor
     secrets:
@@ -59,7 +59,7 @@ jobs:
   update-major:
     name: Performs major update
     needs: isMajor
-    uses: ./.github/workflows/publish.yaml
+    uses: ./.github/workflows/publish.yml
     with:
       update-type: major
     secrets:
