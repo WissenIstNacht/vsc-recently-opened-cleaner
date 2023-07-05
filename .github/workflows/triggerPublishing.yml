@@ -1,0 +1,67 @@
+name: Publish Extension
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  isPatch:
+    name: Check if label is patch
+    if: |
+      github.event.pull_request.merged == true && 
+      contains(github.event.pull_request.labels.*.name, 'patch')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Job Check Report
+        run: echo Found a patch label
+  isMinor:
+    name: Check if label is minor
+    if: |
+      github.event.pull_request.merged == true && 
+      contains(github.event.pull_request.labels.*.name, 'minor')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Job Check Report
+        run: echo Found a minor label
+  isMajor:
+    name: Check if label is major
+    if: |
+      github.event.pull_request.merged == true && 
+      contains(github.event.pull_request.labels.*.name, 'major')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Job Check Report
+        run: echo Found a major label
+  update-patch:
+    name: Performs patch update
+    needs: isPatch
+    uses: ./.github/workflows/publish.yaml
+    with:
+      update-type: patch
+    secrets:
+      WIN_PAT: ${{ secrets.WIN_PAT_1 }}
+      PAT: ${{ secrets.PAT_VSC_MARKETPLACE }}
+  update-minor:
+    name: Performs patch update
+    needs: isMinor
+    uses: ./.github/workflows/publish.yaml
+    with:
+      update-type: minor
+    secrets:
+      WIN_PAT: ${{ secrets.WIN_PAT_1 }}
+      PAT: ${{ secrets.PAT_VSC_MARKETPLACE }}
+  update-major:
+    name: Performs major update
+    needs: isMajor
+    uses: ./.github/workflows/publish.yaml
+    with:
+      update-type: major
+    secrets:
+      WIN_PAT: ${{ secrets.WIN_PAT_1 }}
+      PAT: ${{ secrets.PAT_VSC_MARKETPLACE }}
